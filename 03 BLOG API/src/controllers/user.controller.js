@@ -26,7 +26,6 @@ async function getUserProfile(req, res) {
 async function updateUserProfile(req, res) {
     try {
         const userId = req.params.id
-
         if (req.user.id !== userId) {
             return res.status(403).json({
                 message: "User can update its own profile only"
@@ -53,4 +52,4 @@ async function updateUserProfile(req, res) {
 module.exports = {
     getUserProfile,
     updateUserProfile
-}
+}   

@@ -61,6 +61,7 @@ async function loginController(req, res) {
         }
 
         const isPasswordValid = await bcrypt.compare(password, user.password)
+
         if (!isPasswordValid) {
             return res.status(401).json({
                 message: "Invalid username/email or password"
@@ -69,7 +70,12 @@ async function loginController(req, res) {
 
         const token = jwt.sign({ id: user._id, username: user.username, email: user.email }, process.env.JWT_SECRET)
 
-        res.cookie('token', token)
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: false, // true if you’re on https
+            sameSite: 'lax'
+        })
+
 
         res.status(201).json({
             message: "Login successful",
